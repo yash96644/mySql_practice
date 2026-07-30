@@ -1,0 +1,1 @@
+I am doing this for tracking my all day sql report to they git 
