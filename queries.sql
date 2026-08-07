@@ -1,157 +1,114 @@
-CREATE TABLE departments (
-dept_id INT PRIMARY KEY,
-dept_name VARCHAR(50),
-location VARCHAR(50)
+CREATE TABLE sales (
+ sale_id INT PRIMARY KEY,
+ product_category VARCHAR(50),
+ product_name VARCHAR(50),
+ salesperson VARCHAR(50),
+ region VARCHAR(20),
+ sale_amount DECIMAL(10,2),
+ quantity INT,
+ sale_date DATE
 );
-INSERT INTO departments VALUES
-(10,'HR','Jaipur'),
-(20,'IT','Bangalore'),
-(30,'Finance','Mumbai'),
-(40,'Marketing','Delhi'),
-(50,'Legal','Pune');
-CREATE TABLE employees (
-emp_id INT PRIMARY KEY,
-emp_name VARCHAR(50),
-dept_id INT,
-salary INT,
-city VARCHAR(50)
-);
-INSERT INTO employees VALUES
-(101,'Amit',10,45000,'Jaipur'),
-(102,'Bhavna',20,72000,'Bangalore'),
-(103,'Chirag',20,68000,'Bangalore'),
-(104,'Divya',30,55000,'Mumbai'),
-(105,'Esha',NULL,39000,'Delhi'),
-(106,'Farhan',40,61000,'Delhi'),
-(107,'Gaurav',60,50000,'Kolkata'),
-(108,'Hina',30,83000,'Mumbai');
-CREATE TABLE projects (
-proj_id INT PRIMARY KEY,
-proj_name VARCHAR(50),
-dept_id INT,
-budget INT
-);
-INSERT INTO projects VALUES
-(1,'Payroll Revamp',10,120000),
-(2,'Cloud Migration',20,500000),
-(3,'Mobile App',20,300000),
-(4,'Audit Automation',30,250000),
-(5,'Brand Refresh',40,180000),
-(6,'Data Lake',70,400000);
+
+INSERT INTO sales VALUES
+(1,'Electronics','Laptop','Alice','North',75000,2,'2024-01-05'),
+(2,'Electronics','Phone','Bob','South',25000,5,'2024-01-10'),
+(3,'Clothing','Jacket','Alice','East',8000,3,'2024-01-15'),
+(4,'Furniture','Chair','Charlie','West',12000,4,'2024-01-20'),
+(5,'Electronics','Tablet','Bob','North',35000,2,'2024-02-03'),
+(6,'Clothing','Shirt','Charlie','South',3000,10,'2024-02-08'),
+(7,'Furniture','Table','Alice','East',22000,1,'2024-02-12'),
+(8,'Electronics','Laptop','Charlie','West',80000,1,'2024-02-18'),
+(9,'Clothing','Jeans','Bob','North',6000,5,'2024-02-25'),
+(10,'Furniture','Sofa','Alice','South',45000,2,'2024-03-02'),
+(11,'Electronics','Phone','Charlie','East',28000,3,'2024-03-07'),
+(12,'Clothing','Jacket','Bob','West',9500,2,'2024-03-14'),
+(13,'Furniture','Wardrobe','Charlie','North',32000,1,'2024-03-19'),
+(14,'Electronics','Headphones','Alice','South',5000,8,'2024-03-25'),
+(15,'Clothing','Shirt','Alice','East',3500,12,'2024-04-01'),
+(16,'Furniture','Bookshelf','Bob','West',15000,3,'2024-04-06'),
+(17,'Electronics','Tablet','Charlie','North',38000,2,'2024-04-11'),
+(18,'Clothing','Jeans','Alice','South',7000,4,'2024-04-16'),
+(19,'Furniture','Chair','Bob','East',13000,5,'2024-04-21'),
+(20,'Electronics','Laptop','Alice','West',72000,1,'2024-04-26'),
+(21,'Clothing','Jacket','Charlie','North',10000,3,'2024-05-01'),
+(22,'Furniture','Table','Bob','South',24000,2,'2024-05-06'),
+(23,'Electronics','Phone','Alice','East',27000,4,'2024-05-11'),
+(24,'Clothing','Shirt','Bob','West',4000,8,'2024-05-16');
+
+-- select sale_id , product_category , salesperson , sale_amount from
+-- sales where sale_amount > (select avg(sale_amount) from sales)
+-- order by sale_amount desc;
+
+-- select * from sales where sale_amount = (
+--   select Max(sale_amount) from sales
+-- );
 
 
--- select e.emp_id , e.emp_name , d.dept_name , d.dept_location from employees e join departments d on e.dept_id = d.dept_id;
+-- select sale_id , salesperson , product_name , sale_amount from sales 
 
--- select p.proj_id , p.proj_name , d.dept_name , p.budget from departments as d join projects as p on p.dept_id = d.dept_id;
-
--- select e.emp_name , d.dept_name , p.proj_name from employees as e join departments as d join projects as p 
--- on e.dept_id = d.dept_id and d.dept_id = p.dept_id and p.dept_id = e.dept_id;
-
--- select e.emp_id , e.emp_name , e.dept_id , d.dept_name from employees as e  left join departments as d on d.dept_id = e.dept_id;
-
-
--- select d.dept_id , d.dept_name , p.proj_name , p.budget from departments as d left join projects as p on
--- d.dept_id = p.dept_id ;
+-- select sale_id , salesperson , product_name , sale_amount
+-- from sales
+-- where salesperson =(select salesperson  from sales
+-- group by salesperson)
+-- order by sale_id desc 
+-- ;
 
 
--- select e.emp_id , e.emp_name , e.dept_id from employees as e left join departments as d on e.dept_id = d.dept_id where d.dept_name is null;
+-- select * from sales 
+-- where salesperson = (
 
--- select e.emp_name , d.dept_id , d.dept_name from employees as e right join departments as d on e.dept_id = d.dept_id;
-
-
--- select d.dept_name , p.proj_name , p.proj_id , p.dept_id from departments as d left join projects as p on 
--- d.dept_id = p.dept_id;
-
-
--- select * from employees e cross join departments d where (dept_name ='Legal' or dept_name = 'Finance') and salary >= 70000 ;
-
--- select p.proj_name , p.budget , d.dept_name , d.dept_location from projects as p join departments as d  where  
-
--- select * from projects cross join departments 
--- where budget >= 400000 and location in ('Mumbai' , 'Pune');
+-- select salesperson from sales group by salesperson 
+-- order by count(sale_amount) desc
+-- limit 1
+-- )
+-- order by sale_id;
 
 
--- select   as totalCombination from employees cross join departments;
+-- select sale_id , salesperson , product_name , sale_amount from sales 
+-- where product_name in (
+-- select product_name
+-- from sales 
+-- group by product_name
+-- having count(distinct salesperson) > 2)
+-- order by sale_id ;
 
--- select * from employees where salary >60000;
+-- Find all sales from regions whose average sale amount is above the overall average sale amount of all regions.
+-- Display sale_id, product_category, salesperson, region, and sale_amount, sorted by sale_id.
 
 
--- select * from employees  where city in('Mumbai', 'Delhi');
+-- select sale_id , product_category ,salesperson , product_name , region , sale_amount 
+-- from sales as s 
+-- where
+-- region in (
+--   select region from sales
+--   group by region
+--   having avg(sale_amount)> (
+--     select avg(sale_amount) from sales
+--   )
+-- )
+-- order by sale_id;
 
 
--- select * from departments where location in ('Bangalore' ,'Delhi');
-
--- select * from departments where dept_id >=30;
 
 
--- matching err 
--- select * from departments where dept_name like 'f%' or dept_name like'L%' ;
 
--- select * from projects where budget between 200000 and 400000;
+-- select sale_id , product_category ,product_name , sale_amount 
+-- from sales 
+-- where product_category in (
+--   select product_category 
+--   from sales group by product_category
+--   having max(sale_amount)> (
+--     select max(sale_amount) from sales where product_category !='Furniture'
+--   )
+-- )
 
--- select * from projects where dept_id = 20;
-
--- select * from projects where proj_name like '%a%' and budget < 300000;
-
--- select e.emp_name, d.dept_name, d.location ,  p.proj_name,  p.budget from employees as e join departments as d join projects as p
--- where e.dept_id = d.dept_id and d.dept_id = p.dept_id and p.dept_id = e.dept_id;
-
--- q1
--- select e.emp_id,e.emp_name,d.dept_name,d.location from employees e join departments d on e.dept_id=d.dept_id;
--- q2
--- select p.proj_id,p.proj_name,d.dept_name,p.budget from projects p join departments d on p.dept_id=d.dept_id;
--- q3
--- select e.emp_name,d.dept_name,p.proj_name from employees e join departments d on e.dept_id=d.dept_id join projects p on d.dept_id=p.dept_id;
--- q4
--- select e.emp_id,e.emp_name,e.dept_id,d.dept_name from employees e left join departments d on e.dept_id=d.dept_id;
--- q5
--- select d.dept_id,d.dept_name,p.proj_name,p.budget from departments d left join projects p on d.dept_id=p.dept_id;
--- q6
--- select e.emp_id,e.emp_name,e.dept_id from employees e left join departments d on e.dept_id=d.dept_id where d.dept_id is null;
--- q7
--- select e.emp_name,d.dept_id,d.dept_name from employees e right join departments d on e.dept_id=d.dept_id;
--- q8
--- select d.dept_name,p.proj_id,p.proj_name,p.dept_id from departments d right join projects p on d.dept_id=p.dept_id;
--- q9
--- select d.dept_id,d.dept_name,d.location from departments d left join employees e on d.dept_id=e.dept_id where e.emp_id is null;
--- q10
--- select e.emp_name,e.salary,d.dept_name from employees e cross join departments d where d.dept_name in ('Finance','Legal') and e.salary>70000;
--- q11
--- select p.proj_name,p.budget,d.dept_name,d.location from projects p cross join departments d where p.budget>=400000 and d.location in ('Mumbai','Pune');
--- q12
--- select count(*) as total_combinations from employees cross join departments;
--- q13
--- select * from employees where salary>60000;
--- q14
--- select emp_id,emp_name,salary,city from employees where city in ('Delhi','Mumbai');
--- q15
--- select emp_id,emp_name,dept_id,salary from employees where dept_id is null;
--- q16
--- select * from departments where location in ('Bangalore','Delhi');
--- q17
--- select * from departments where dept_id>=30;
--- q18
--- select * from departments where dept_name like 'F%' or dept_name like 'L%';
--- q19
--- select * from projects where budget between 200000 and 400000;
--- q20
--- select * from projects where dept_id=20;
--- q21
--- select proj_id,proj_name,budget from projects where proj_name like '%a%' and budget<300000;
--- q22
--- select e.emp_name,d.dept_name,d.location,p.proj_name,p.budget from employees e join departments d on e.dept_id=d.dept_id join projects p on d.dept_id=p.dept_id;
--- q23
--- select e.emp_id,e.emp_name,d.dept_name,p.proj_name from employees e left join departments d on e.dept_id=d.dept_id left join projects p on d.dept_id=p.dept_id;
--- q24
--- select e.emp_name,e.salary,d.dept_name,p.proj_name,p.budget from employees e join departments d on e.dept_id=d.dept_id join projects p on d.dept_id=p.dept_id where e.salary>60000 and p.budget>250000;
--- q25
--- select d.dept_id,d.dept_name,e.emp_name,p.proj_name from departments d left join employees e on d.dept_id=e.dept_id left join projects p on d.dept_id=p.dept_id;
--- q26
--- select e.emp_name,d.location,p.proj_name from employees e join departments d on e.dept_id=d.dept_id join projects p on d.dept_id=p.dept_id where d.location in ('Bangalore','Mumbai');
--- q27
--- select e1.emp_name as employee_1,e2.emp_name as employee_2,e1.city from employees e1 join employees e2 on e1.city=e2.city and e1.emp_id<e2.emp_id;
--- q28
--- select p.proj_name,p.dept_id,e.emp_name from projects p left join employees e on p.dept_id=e.dept_id;
+-- select sale_id , product_category , product_name , sale_amount
+-- from sales
+-- where sale_amount > (
+--   select max(sale_amount)
+--   from sales
+--   where product_category = 'Furniture'
+-- )
 
 
 
